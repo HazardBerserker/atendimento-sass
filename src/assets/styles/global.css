@@ -1,0 +1,98 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Inter Regular (todos os pesos de 100 a 900) */
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Inter Italic (também todos os pesos) */
+@font-face {
+  font-family: 'Inter';
+  src: url('../styles/fonts/Inter-VariableFont_opsz_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+/* Reset básico */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif !important;
+  line-height: 1.4;
+  background-color: #F8F8F7;
+  color: #333 !important;
+}
+
+/* Garantir que o v-main tenha cor de texto correta */
+.v-main {
+  color: #333 !important;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Imagens e mídias responsivas */
+img, video {
+  max-width: 100%;
+  display: block;
+}
+
+.v-app-bar-nav-icon {
+  color: white !important;
+}
+
+/* ── Vuetify overlay / button fixes ──────────────────────── */
+
+/* Prevent dark scrim behind menus */
+.v-overlay__scrim {
+  opacity: 0 !important;
+  display: none !important;
+}
+
+/* Keep v-dialog scrim visible */
+.v-dialog + .v-overlay__scrim,
+.v-overlay--active.v-dialog .v-overlay__scrim {
+  display: block !important;
+  opacity: 0.5 !important;
+}
+
+/* Remove the harsh dark hover overlay on buttons */
+.v-btn .v-btn__overlay {
+  background-color: currentColor !important;
+}
+
+/* Ensure Vuetify selects/menus use white background */
+.v-list {
+  background-color: #FFFFFF !important;
+}
+
+.v-select__content .v-list {
+  background-color: #FFFFFF !important;
+  border-radius: 10px !important;
+  border: 1px solid #EFEFEF !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important;
+}
+
+/* Vuetify field overlay — prevent it from darkening inputs */
+.v-field__overlay {
+  background-color: transparent !important;
+  opacity: 0 !important;
+}
