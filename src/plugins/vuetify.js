@@ -17,6 +17,11 @@ const vuetify = createVuetify({
         fontFamily: 'Nunito, sans-serif'
       }
     },
+    // Evita o reposicionamento da página ao abrir dialogs (efeito "espelho"
+    // / deslocamento do fundo no mobile). O fundo apenas permanece estático.
+    VDialog: {
+      scrollStrategy: 'none'
+    },
     VBtn: {
       style: {
         fontFamily: 'Nunito, sans-serif',
@@ -46,49 +51,65 @@ const vuetify = createVuetify({
       darkTheme: {
         dark: true,
         colors: {
-          laranjaAccentDarken: '#D66236',
-          laranjaAccent: '#EB6C3B',
-          laranjaDarken2: '#D68B36',
-          laranjaDarken1: '#EB993B',
-          laranja: '#EAA83B',
-          laranjaLighten1: '#ECB04D',
-          laranjaLighten2: '#F0C06A',
-          laranjaLighten3: '#F0BE6C',
-          laranjaLighten4: '#F1C479',
-          laranjaLighten5: '#F2C985',
+          background: '#1E1A17',
+          surface: '#29231E',
 
-          white: '#FFFFFF',
-          whiteDarken1: '#FAFAFA',
-          whiteDarken2: '#F5F5F5',
-          whiteDarken3: '#EEEEEE',
-          whiteDarken4: '#E5E5E5',
+          laranjaAccentDarken: '#C9854A',
+          laranjaAccent: '#E0A165',
+          laranjaDarken2: '#E0A165',
+          laranjaDarken1: '#E0A165',
+          laranja: '#E0A165',
+          laranjaLighten1: '#E6B077',
+          laranjaLighten2: '#ECC08F',
+          laranjaLighten3: '#ECC08F',
+          laranjaLighten4: '#F0CB9F',
+          laranjaLighten5: '#F2D2AB',
 
-          rosaAcento: '#C96B64',
-          rosaFundo: '#FFF8F7',
+          white: '#29231E',
+          whiteDarken1: '#322A23',
+          whiteDarken2: '#352D25',
+          whiteDarken3: '#3A322A',
+          whiteDarken4: '#463C32',
+
+          rosaAcento: '#D58A7F',
+          rosaFundo: 'rgba(213,138,127,0.10)',
+
+          success: '#4F9D72',
+          warning: '#C68A3E',
+          error: '#C9594F',
+          info: '#5B7FB5',
         }
       },
       lightTheme: {
         dark: false,
         colors: {
-          laranjaAccentDarken: '#D66236',
-          laranjaAccent: '#EB6C3B',
-          laranjaDarken2: '#D68B36',
-          laranjaDarken1: '#EB993B',
-          laranja: '#EAA83B',
-          laranjaLighten1: '#ECB04D',
-          laranjaLighten2: '#F0C06A',
-          laranjaLighten3: '#F0BE6C',
-          laranjaLighten4: '#F1C479',
-          laranjaLighten5: '#F2C985',
+          background: '#F4EEE6',
+          surface: '#FCF9F5',
 
-          white: '#FFFFFF',
-          whiteDarken1: '#FAFAFA',
-          whiteDarken2: '#F5F5F5',
-          whiteDarken3: '#EEEEEE',
-          whiteDarken4: '#E5E5E5',
+          laranjaAccentDarken: '#A9663A',
+          laranjaAccent: '#C57F4B',
+          laranjaDarken2: '#C57F4B',
+          laranjaDarken1: '#CC8C50',
+          laranja: '#C57F4B',
+          laranjaLighten1: '#D29A66',
+          laranjaLighten2: '#DDB084',
+          laranjaLighten3: '#E3BD96',
+          laranjaLighten4: '#E9C9A8',
+          laranjaLighten5: '#EFD6BB',
 
-          rosaAcento: '#C96B64',
-          rosaFundo: '#FFF8F7',
+          white: '#FCF9F5',
+          whiteDarken1: '#F8F2EA',
+          whiteDarken2: '#F3EBE0',
+          whiteDarken3: '#EBE2D5',
+          whiteDarken4: '#DFD3C2',
+
+          rosaAcento: '#C16C61',
+          rosaFundo: '#F9F0EE',
+
+          success: '#4F9D72',
+          warning: '#C68A3E',
+          error: '#C9594F',
+          info: '#5B7FB5',
         }
       }
     }

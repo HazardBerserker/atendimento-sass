@@ -10,9 +10,7 @@
       <div class="dialog-header">
         <div class="dialog-header-left">
           <div class="dialog-icon">
-            <v-icon :color="isEditMode ? 'laranjaDarken2' : 'laranja'" size="18">
-              {{ isEditMode ? 'mdi-pencil-outline' : 'mdi-plus' }}
-            </v-icon>
+            <v-icon :color="isEditMode ? 'laranjaDarken2' : 'laranja'" size="18">{{ isEditMode ? 'mdi-pencil-outline' : 'mdi-plus' }}</v-icon>
           </div>
           <div>
             <h2 class="dialog-title">{{ isEditMode ? 'Editar Atendimento' : 'Novo Atendimento' }}</h2>
@@ -20,7 +18,7 @@
           </div>
         </div>
         <button class="close-btn" @click="fechar">
-          <v-icon size="18" color="#999">mdi-close</v-icon>
+          <v-icon size="18" color="var(--c-text-soft)">mdi-close</v-icon>
         </button>
       </div>
 
@@ -94,7 +92,7 @@ export default {
 
 <style scoped>
 .atendimento-dialog {
-  background: #FFFFFF !important;
+  background: var(--c-surface) !important;
   overflow: hidden;
 }
 
@@ -104,7 +102,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px 16px;
-  border-bottom: 1px solid #F0F0F0;
+  border-bottom: 1px solid var(--c-border);
 }
 
 .dialog-header-left {
@@ -128,7 +126,7 @@ export default {
   font-family: 'Nunito', sans-serif;
   font-size: 1rem;
   font-weight: 700;
-  color: #1A1A1A;
+  color: var(--c-text);
   margin: 0;
   line-height: 1;
 }
@@ -136,7 +134,7 @@ export default {
 .dialog-subtitle {
   font-family: 'Nunito', sans-serif;
   font-size: 0.75rem;
-  color: #AAA;
+  color: var(--c-text-faint);
   margin: 3px 0 0;
 }
 
@@ -145,7 +143,7 @@ export default {
   height: 30px;
   border-radius: 8px;
   background: transparent;
-  border: 1px solid #EFEFEF;
+  border: 1px solid var(--c-border);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -155,8 +153,8 @@ export default {
 }
 
 .close-btn:hover {
-  background: #F5F5F5;
-  border-color: #E0E0E0;
+  background: var(--c-surface-hover);
+  border-color: var(--c-border-strong);
 }
 
 /* Body */
@@ -173,17 +171,17 @@ export default {
   justify-content: flex-end;
   gap: 8px;
   padding: 14px 24px;
-  border-top: 1px solid #F0F0F0;
-  background: #FAFAFA;
+  border-top: 1px solid var(--c-border);
+  background: var(--c-surface-2);
 }
 
 .btn-cancel {
   font-family: 'Nunito', sans-serif;
   font-size: 0.82rem;
   font-weight: 600;
-  color: #888;
+  color: var(--c-text-soft);
   background: transparent;
-  border: 1px solid #E5E5E5;
+  border: 1px solid var(--c-border-strong);
   border-radius: 8px;
   padding: 7px 16px;
   cursor: pointer;
@@ -191,8 +189,8 @@ export default {
 }
 
 .btn-cancel:hover {
-  background: #F5F5F5;
-  color: #555;
+  background: var(--c-surface-hover);
+  color: var(--c-text-soft);
 }
 
 .btn-save {
@@ -200,7 +198,7 @@ export default {
   font-size: 0.82rem;
   font-weight: 700;
   color: white;
-  background: #D68B36;
+  background: var(--c-primary);
   border: none;
   border-radius: 8px;
   padding: 7px 18px;
@@ -213,7 +211,7 @@ export default {
 }
 
 .btn-save:hover:not(:disabled) {
-  background: #C07A28;
+  background: var(--c-primary-dark);
   transform: translateY(-1px);
   box-shadow: 0 3px 10px rgba(214, 139, 54, 0.4);
 }

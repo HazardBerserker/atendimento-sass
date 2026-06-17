@@ -1,13 +1,14 @@
 
 <template>
   <router-view v-slot="{ Component }">
-    <v-fade-transition mode="out-in">
+    <Transition name="route" mode="out-in">
       <component :is="Component"></component>
-    </v-fade-transition>
+    </Transition>
   </router-view>
   <GlobalLoading />
   <GlobalAlert />
   <GlobalDialogConfirm ref="dialogRef" />
+  <PwaPrompt />
 </template>
 
 <script setup>
@@ -15,6 +16,7 @@
   import GlobalLoading from '@/modulos/Shared/Components/GlobalComponents/GlobalLoading.vue'
   import GlobalAlert from '@/modulos/Shared/Components/GlobalComponents/GlobalAlert.vue'
   import GlobalDialogConfirm from '@/modulos/Shared/Components/GlobalComponents/GlobalDialogConfirm.vue'
+  import PwaPrompt from '@/modulos/Shared/Components/GlobalComponents/PwaPrompt.vue'
   import { useTema } from '@/modulos/Shared/Domain/Composables/useTema'
 
   const dialogRef = ref()

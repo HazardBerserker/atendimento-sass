@@ -120,14 +120,7 @@
 
         <v-col cols="12" md="6">
           <div class="sinal-row">
-            <v-switch
-              v-model="formData.sinalPago"
-              label="Sinal recebido"
-              color="laranja"
-              hide-details
-              density="compact"
-              class="sinal-switch"
-            />
+            <BaseSwitch v-model="formData.sinalPago" label="Sinal recebido" />
           </div>
         </v-col>
 
@@ -187,7 +180,7 @@
             class="field"
           >
             <template v-slot:prepend-inner>
-              <v-icon size="16" color="#CCC">mdi-clock-outline</v-icon>
+              <v-icon size="16" color="var(--c-text-faint)">mdi-clock-outline</v-icon>
             </template>
           </v-text-field>
         </v-col>
@@ -198,6 +191,8 @@
 </template>
 
 <script>
+import { useProcedimentoStore } from '@/modulos/Configuracoes/Domain/Stores/procedimentoStore'
+
 export default {
   name: 'AtendimentoForm',
   props: {
@@ -206,6 +201,9 @@ export default {
     dataSelecionada:{ type: Date, default: null }
   },
   emits: ['submit'],
+  setup() {
+    return { procedimentoStore: useProcedimentoStore() }
+  },
   data() {
     return {
       valid: false,
@@ -213,15 +211,6 @@ export default {
         nomeCompleto: '', telefone: '', email: '', procedimento: '',
         valor: '', sinalPago: false, valorSinal: '', dataObj: null, hora: '', status: 'agendado'
       },
-      procedimentos: [
-        { nome: 'Volume Brasileiro', valor: 145 },
-        { nome: 'Volume Brasileiro Marrom', valor: 145 },
-        { nome: 'Glamour', valor: 180 },
-        { nome: 'Efeito Molhado', valor: 155 },
-        { nome: 'Fio U', valor: 165 },
-        { nome: 'Fox', valor: 190 },
-        { nome: 'Wispy', valor: 180 }
-      ],
       statusOptions: [
         { value: 'agendado',   label: 'Agendado',   color: '#2563EB', icon: 'mdi-clock-outline' },
         { value: 'confirmado', label: 'Confirmado', color: '#D97706', icon: 'mdi-check-circle' },
@@ -235,6 +224,11 @@ export default {
         phone:        v => !v || /^\(\d{2}\) \d{5}-\d{4}$/.test(v) || 'Telefone inválido',
         time:         v => !v || /^([01]\d|2[0-3]):([0-5]\d)$/.test(v) || 'Use 24h: 14:00'
       }
+    }
+  },
+  computed: {
+    procedimentos() {
+      return this.procedimentoStore.procedimentosAtivos.map(p => ({ nome: p.nome, valor: p.valor }))
     }
   },
   watch: {
@@ -307,7 +301,7 @@ export default {
   font-family: 'Nunito', sans-serif;
   font-size: 0.65rem;
   font-weight: 700;
-  color: #C0C0C0;
+  color: var(--c-text-faint);
   text-transform: uppercase;
   letter-spacing: 0.7px;
   margin: 0 0 8px;
@@ -315,7 +309,7 @@ export default {
 
 .sep {
   height: 1px;
-  background: #F5F5F5;
+  background: var(--c-surface-hover);
   margin: 12px 0;
 }
 
@@ -324,7 +318,7 @@ export default {
   border-radius: 8px;
   font-family: 'Nunito', sans-serif;
   font-size: 0.875rem;
-  background-color: #FFFFFF !important;
+  background-color: var(--c-surface) !important;
 }
 
 .field :deep(.v-field__overlay) {
@@ -338,12 +332,12 @@ export default {
 
 .field :deep(.v-field input),
 .field :deep(.v-field textarea) {
-  color: #333 !important;
-  caret-color: #D68B36 !important;
+  color: var(--c-text) !important;
+  caret-color: var(--c-primary) !important;
 }
 
 .field :deep(.v-label) {
-  color: #BBB !important;
+  color: var(--c-text-faint) !important;
   font-family: 'Nunito', sans-serif;
 }
 
@@ -353,11 +347,11 @@ export default {
 
 .field :deep(.v-text-field__prefix),
 .field :deep(.v-field__prepend-inner .v-icon) {
-  color: #CCC !important;
+  color: var(--c-text-faint) !important;
 }
 
 .field :deep(.v-select__selection-text) {
-  color: #333 !important;
+  color: var(--c-text) !important;
 }
 
 /* ── Procedimento price ──────────────────────────────── */
@@ -365,7 +359,7 @@ export default {
   font-family: 'Nunito', sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
-  color: #D68B36;
+  color: var(--c-primary);
 }
 
 /* ── Sinal switch row ────────────────────────────────── */
@@ -380,7 +374,7 @@ export default {
   font-family: 'Nunito', sans-serif;
   font-size: 0.82rem;
   font-weight: 600;
-  color: #444 !important;
+  color: var(--c-text) !important;
 }
 
 /* ── Sinal tip ───────────────────────────────────────── */
@@ -399,11 +393,11 @@ export default {
 
 /* ── Date picker ─────────────────────────────────────── */
 .field :deep(.v-picker) {
-  background: #FFFFFF !important;
+  background: var(--c-surface) !important;
 }
 
 .field :deep(.v-date-picker-month__day--selected .v-btn) {
-  background-color: #D68B36 !important;
+  background-color: var(--c-primary) !important;
   color: white !important;
 }
 </style>

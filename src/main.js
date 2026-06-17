@@ -6,6 +6,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import './assets/styles/global.css'
 import vuetify from '@/plugins/vuetify';
 import { i18n } from '@/plugins/i18n'
+import BaseSwitch from '@/modulos/Shared/Components/UI/BaseSwitch.vue'
 import mitt from 'mitt';
 // import { createEchoInstance } from './plugins/echo'
 import {mask} from 'vue-the-mask'
@@ -18,6 +19,7 @@ import * as Highcharts from 'highcharts/highmaps';
 import HighchartsVue from 'highcharts-vue';
 import mapData from '@highcharts/map-collection/countries/br/br-all.geo.json';
 import { hydrationPlugin } from './modulos/Shared/Domain/Stores/hydratationPlugin'
+import { inicializarPwa } from '@/modulos/Shared/Domain/Services/pwaService'
 // Inicializa o módulo
 Highcharts.setOptions({
   lang: {
@@ -41,6 +43,9 @@ pinia.use(piniaPluginPersistedstate)
 pinia.use(hydrationPlugin)
 
 const app = createApp(App)
+
+// Componentes próprios (não-Vuetify) registrados globalmente
+app.component('BaseSwitch', BaseSwitch)
 
 // diretivas
 app.directive('mask', mask);
@@ -67,3 +72,9 @@ app.use(money)
 app.use(HighchartsVue, { highcharts: Highcharts })
 
 app.mount('#app')
+
+// PWA — registra service worker e prepara instalação (somente em produção
+// para não interferir no hot-reload do ambiente de desenvolvimento)
+if (import.meta.env.PROD) {
+  inicializarPwa()
+}

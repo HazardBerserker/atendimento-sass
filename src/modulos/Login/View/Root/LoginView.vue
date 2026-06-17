@@ -381,7 +381,7 @@ export default {
 /* Right Side - Login Form */
 .right-side {
   flex: 1;
-  background: #fafafa;
+  background: var(--c-bg, #F4EEE6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -426,10 +426,11 @@ export default {
 .login-form-container {
   width: 100%;
   max-width: 450px;
-  background: white;
+  background: var(--c-surface, #FCF9F5);
   padding: 3rem;
   border-radius: 24px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-lg, 0 12px 36px rgba(89,66,45,0.12));
+  border: 1px solid var(--c-border, #EBE2D5);
   position: relative;
   z-index: 1;
 }
@@ -449,7 +450,7 @@ export default {
   font-family: 'Playfair Display', serif;
   font-size: 2rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--c-text, #3B342E);
   margin: 0 0 0.5rem 0;
 }
 
@@ -480,7 +481,7 @@ export default {
   font-family: 'Nunito', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--c-text, #3B342E);
 }
 
 .login-btn {

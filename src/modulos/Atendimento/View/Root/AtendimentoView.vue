@@ -2,7 +2,7 @@
   <div class="atendimento-view">
 
     <!-- ─── Header ─────────────────────────────────────────────────── -->
-    <div class="view-header mb-4">
+    <div class="view-header mb-4 anim-in" style="--i:0">
       <div>
         <h1 class="page-title">Dashboard</h1>
         <p class="page-subtitle">Gestão de atendimentos e faturamento</p>
@@ -39,7 +39,7 @@
     </div>
 
     <!-- ─── Seletor de Período ────────────────────────────────────── -->
-    <div class="period-section mb-4">
+    <div class="period-section mb-4 anim-in" style="--i:1">
       <div class="period-bar">
         <div class="period-chips">
           <button
@@ -64,8 +64,8 @@
     </div>
 
     <!-- ─── KPIs Financeiros ──────────────────────────────────────── -->
-    <div class="section-label mb-2">Financeiro</div>
-    <v-row dense class="mb-2">
+    <div class="section-label mb-2 anim-in" style="--i:2">Financeiro</div>
+    <v-row dense class="mb-2 anim-in" style="--i:3">
       <v-col cols="12" sm="6" md="3">
         <MetricCard
           title="Faturamento Realizado"
@@ -112,8 +112,8 @@
     </v-row>
 
     <!-- ─── KPIs Operacionais ─────────────────────────────────────── -->
-    <div class="section-label mb-2">Operacional</div>
-    <v-row dense class="mb-4">
+    <div class="section-label mb-2 anim-in" style="--i:4">Operacional</div>
+    <v-row dense class="mb-4 anim-in" style="--i:5">
       <v-col cols="12" sm="6" md="3">
         <MetricCard
           title="Atendimentos"
@@ -261,22 +261,24 @@
       </div>
     </div>
 
-    <!-- Visualização Calendário -->
-    <div v-if="visualizacao === 'calendario'" class="content-view">
-      <AtendimentoCalendar
-        :atendimentos="atendimentos"
-        @dia-click="handleDiaClick"
-        @evento-click="handleEventoClick"
-      />
-    </div>
-
-    <!-- Visualização Kanban -->
-    <div v-if="visualizacao === 'kanban'" class="content-view">
-      <AtendimentoKanban
-        :atendimentos="atendimentos"
-        @update-status="handleUpdateStatus"
-        @card-click="handleCardClick"
-      />
+    <!-- Visualização (Calendário / Kanban) com transição de troca -->
+    <div class="view-swap-wrap">
+      <Transition name="view-swap" mode="out-in" appear>
+        <div :key="visualizacao" class="content-view">
+          <AtendimentoCalendar
+            v-if="visualizacao === 'calendario'"
+            :atendimentos="atendimentos"
+            @dia-click="handleDiaClick"
+            @evento-click="handleEventoClick"
+          />
+          <AtendimentoKanban
+            v-else
+            :atendimentos="atendimentos"
+            @update-status="handleUpdateStatus"
+            @card-click="handleCardClick"
+          />
+        </div>
+      </Transition>
     </div>
 
     <!-- Dialogs -->
@@ -433,6 +435,12 @@ export default {
 
   mounted() {
     this.atendimentoStore.carregarAtendimentos()
+    // Abertura do dialog disparada pelo FAB da barra inferior (modo app)
+    this.emitter?.on('abrir-novo-atendimento', this.abrirNovoAtendimento)
+  },
+
+  beforeUnmount() {
+    this.emitter?.off('abrir-novo-atendimento', this.abrirNovoAtendimento)
   },
 
   methods: {
@@ -474,6 +482,11 @@ export default {
 
     handleDiaClick(dia) {
       this.dataSelecionada = dia.data
+      this.dialogNovoAtendimento = true
+    },
+
+    abrirNovoAtendimento() {
+      this.dataSelecionada = null
       this.dialogNovoAtendimento = true
     },
 
@@ -525,11 +538,11 @@ export default {
 <style scoped>
 /* ── Layout geral ──────────────────────────────────────────────── */
 .atendimento-view {
-  padding: 20px 24px 32px;
+  padding: 22px 26px 40px;
   max-width: 1600px;
   margin: 0 auto;
-  background: #F8F8F7;
-  min-height: 100vh;
+  background: transparent;
+  min-height: calc(100vh - 60px);
 }
 
 /* ── Header ───────────────────────────────────────────────────── */
@@ -543,17 +556,17 @@ export default {
 
 .page-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  color: #1A1A1A;
+  color: var(--c-text);
   line-height: 1;
 }
 
 .page-subtitle {
   font-family: 'Nunito', sans-serif;
-  font-size: 0.8rem;
-  color: #AAA;
-  margin-top: 3px;
+  font-size: 0.82rem;
+  color: var(--c-text-soft);
+  margin-top: 4px;
 }
 
 .header-actions {
@@ -572,23 +585,23 @@ export default {
   align-items: center;
   gap: 5px;
   cursor: pointer;
-  border-radius: 8px;
-  padding: 7px 13px;
-  transition: all 0.12s ease;
+  border-radius: var(--r-sm);
+  padding: 8px 14px;
+  transition: all 0.15s ease;
   letter-spacing: 0.1px;
   white-space: nowrap;
 }
 
 .hbtn-outline {
-  background: #FFFFFF;
-  border: 1px solid #E5E5E5;
-  color: #555;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-strong);
+  color: var(--c-text-soft);
 }
 
 .hbtn-outline:hover:not(:disabled) {
-  background: #F7F7F7;
-  border-color: #CCC;
-  color: #333;
+  background: var(--c-surface-hover);
+  border-color: var(--c-text-faint);
+  color: var(--c-text);
 }
 
 .hbtn-outline:disabled {
@@ -597,31 +610,31 @@ export default {
 }
 
 .hbtn-primary {
-  background: #D68B36;
+  background: var(--c-primary);
   border: none;
   color: #FFFFFF;
-  box-shadow: 0 2px 8px rgba(214,139,54,0.25);
+  box-shadow: var(--shadow-sm);
   font-weight: 700;
 }
 
 .hbtn-primary:hover {
-  background: #C07A28;
+  background: var(--c-primary-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(214,139,54,0.38);
+  box-shadow: var(--shadow-md);
 }
 
 /* ── Período ───────────────────────────────────────────────────── */
 .period-bar {
-  background: #FFFFFF;
-  border: 1px solid #EFEFEF;
-  border-radius: 10px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
   padding: 8px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  box-shadow: var(--shadow-xs);
 }
 
 .period-chips {
@@ -634,27 +647,27 @@ export default {
   font-family: 'Nunito', sans-serif;
   font-size: 0.74rem;
   font-weight: 600;
-  padding: 4px 12px;
+  padding: 5px 13px;
   border-radius: 20px;
-  border: 1px solid #EBEBEB;
+  border: 1px solid var(--c-border);
   background: transparent;
-  color: #888;
+  color: var(--c-text-soft);
   cursor: pointer;
-  transition: all 0.12s ease;
+  transition: all 0.15s ease;
   letter-spacing: 0.1px;
 }
 
 .period-chip:hover {
-  border-color: #D68B36;
-  color: #D68B36;
-  background: rgba(214, 139, 54, 0.05);
+  border-color: var(--c-primary);
+  color: var(--c-primary);
+  background: var(--c-primary-softer);
 }
 
 .period-chip.active {
-  background: #D68B36;
-  border-color: #D68B36;
+  background: var(--c-primary);
+  border-color: var(--c-primary);
   color: #FFFFFF;
-  box-shadow: 0 2px 6px rgba(214, 139, 54, 0.35);
+  box-shadow: var(--shadow-sm);
 }
 
 .period-info {
@@ -667,15 +680,15 @@ export default {
   font-family: 'Nunito', sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #444;
+  color: var(--c-text);
   text-transform: capitalize;
 }
 
 .period-count {
   font-family: 'Nunito', sans-serif;
   font-size: 0.75rem;
-  color: #999;
-  border-left: 1px solid #E0E0E0;
+  color: var(--c-text-soft);
+  border-left: 1px solid var(--c-border-strong);
   padding-left: 8px;
   margin-left: 2px;
 }
@@ -685,7 +698,7 @@ export default {
   font-family: 'Nunito', sans-serif;
   font-size: 0.7rem;
   font-weight: 700;
-  color: #AAA;
+  color: var(--c-text-soft);
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
@@ -701,15 +714,15 @@ export default {
 
 .section-title {
   font-family: 'Nunito', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #1A1A1A;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--c-text);
 }
 
 .section-subtitle {
   font-family: 'Nunito', sans-serif;
   font-size: 0.74rem;
-  color: #BBB;
+  color: var(--c-text-soft);
   margin-top: 1px;
 }
 
@@ -720,9 +733,9 @@ export default {
   font-family: 'Nunito', sans-serif;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #C96B64;
-  background: #FFF0EE;
-  border: 1px solid #F5C8C4;
+  color: var(--c-rose);
+  background: var(--c-rose-soft);
+  border: 1px solid var(--c-rose-border);
   border-radius: 20px;
   padding: 4px 12px;
   letter-spacing: 0.3px;
@@ -730,34 +743,34 @@ export default {
 
 /* ── Monthly breakdown ────────────────────────────────────────── */
 .monthly-section {
-  background: #FFFFFF;
-  border-radius: 12px;
-  border: 1px solid #EFEFEF;
-  padding: 16px 20px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  background: var(--c-surface);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--c-border);
+  padding: 18px 22px;
+  box-shadow: var(--shadow-sm);
 }
 
 .empty-monthly {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 32px 0;
+  padding: 36px 0;
   gap: 8px;
-  color: #AAA;
+  color: var(--c-text-soft);
 }
 
 .empty-monthly p {
   font-family: 'Nunito', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #BBB;
+  color: var(--c-text-soft);
   margin: 0;
 }
 
 .empty-monthly span {
   font-family: 'Nunito', sans-serif;
   font-size: 0.78rem;
-  color: #CCC;
+  color: var(--c-text-faint);
   text-align: center;
 }
 
@@ -772,13 +785,13 @@ export default {
 }
 
 .monthly-table thead tr {
-  border-bottom: 2px solid #F0F0F0;
+  border-bottom: 2px solid var(--c-border);
 }
 
 .monthly-table th {
   font-size: 0.68rem;
   font-weight: 700;
-  color: #AAA;
+  color: var(--c-text-soft);
   text-transform: uppercase;
   letter-spacing: 0.6px;
   padding: 8px 12px;
@@ -786,10 +799,10 @@ export default {
 }
 
 .monthly-table td {
-  padding: 10px 12px;
+  padding: 11px 12px;
   font-size: 0.875rem;
-  color: #333;
-  border-bottom: 1px solid #F5F5F5;
+  color: var(--c-text);
+  border-bottom: 1px solid var(--c-border-soft);
   vertical-align: middle;
 }
 
@@ -798,15 +811,15 @@ export default {
 }
 
 .row-stripe td {
-  background: #FAFAFA;
+  background: var(--c-surface-2);
 }
 
 .row-current td {
-  background: #FFF8F7 !important;
+  background: var(--c-rose-soft) !important;
 }
 
 .row-current .mes-label {
-  color: #C96B64;
+  color: var(--c-rose);
   font-weight: 700;
 }
 
@@ -818,15 +831,15 @@ export default {
 
 .mes-label {
   font-weight: 600;
-  color: #333;
+  color: var(--c-text);
 }
 
 .current-badge {
   font-size: 0.6rem;
   font-weight: 700;
-  background: #FFF0EE;
-  color: #C96B64;
-  border: 1px solid #F5C8C4;
+  background: var(--c-rose-soft);
+  color: var(--c-rose);
+  border: 1px solid var(--c-rose-border);
   border-radius: 8px;
   padding: 1px 6px;
   margin-left: 6px;
@@ -837,29 +850,29 @@ export default {
 
 .qtd-value {
   font-weight: 700;
-  color: #555;
+  color: var(--c-text-soft);
   display: block;
   text-align: center;
 }
 
 .valor-realizado {
   font-weight: 700;
-  color: #1A1A1A;
+  color: var(--c-text);
   font-size: 0.9rem;
 }
 
 .progress-bar-wrap {
   height: 6px;
-  background: #F0F0F0;
+  background: var(--c-surface-hover);
   border-radius: 3px;
   overflow: hidden;
 }
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #C96B64, #E8A44D);
+  background: linear-gradient(90deg, var(--c-rose), var(--c-primary));
   border-radius: 3px;
-  transition: width 0.4s ease;
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .variacao {
@@ -873,37 +886,37 @@ export default {
 }
 
 .variacao-up {
-  color: #1A8C5C;
-  background: rgba(26, 140, 92, 0.08);
+  color: var(--c-success);
+  background: var(--c-success-soft);
 }
 
 .variacao-down {
-  color: #DC2626;
-  background: rgba(220, 38, 38, 0.08);
+  color: var(--c-danger);
+  background: var(--c-danger-soft);
 }
 
 .variacao-null {
-  color: #CCC;
+  color: var(--c-text-faint);
   font-size: 0.85rem;
 }
 
 .total-row td {
-  border-top: 2px solid #F0F0F0;
+  border-top: 2px solid var(--c-border);
   font-weight: 700;
-  color: #1A1A1A;
+  color: var(--c-text);
   font-size: 0.875rem;
-  background: #FAFAFA;
+  background: var(--c-surface-2);
 }
 
 /* ── View toggle (native) ─────────────────────────────────────── */
 .view-toggle {
   display: flex;
-  background: #FFFFFF;
-  border: 1px solid #EFEFEF;
-  border-radius: 10px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
   padding: 3px;
   gap: 2px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow-xs);
 }
 
 .view-toggle-btn {
@@ -917,30 +930,49 @@ export default {
   background: transparent;
   border: none;
   border-radius: 7px;
-  padding: 6px 14px;
-  color: #999;
-  transition: all 0.12s ease;
+  padding: 7px 15px;
+  color: var(--c-text-soft);
+  transition: all 0.15s ease;
   letter-spacing: 0.1px;
 }
 
 .view-toggle-btn:hover {
-  color: #555;
-  background: #F5F5F5;
+  color: var(--c-text);
+  background: var(--c-surface-hover);
 }
 
 .view-toggle-btn.active {
-  background: #D68B36;
+  background: var(--c-primary);
   color: #FFFFFF;
-  box-shadow: 0 1px 4px rgba(214,139,54,0.3);
+  box-shadow: var(--shadow-sm);
 }
 
+/* Press tátil nos controles */
+.hbtn:active,
+.period-chip:active,
+.view-toggle-btn:active { transform: scale(0.95); }
+
+.view-swap-wrap {
+  position: relative;
+}
 .content-view {
-  animation: fadeIn 0.25s ease;
+  will-change: transform, opacity;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Troca animada entre Calendário e Kanban */
+.view-swap-enter-active {
+  transition: opacity 0.32s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.view-swap-leave-active {
+  transition: opacity 0.22s ease, transform 0.28s ease;
+}
+.view-swap-enter-from {
+  opacity: 0;
+  transform: translateX(26px) scale(0.99);
+}
+.view-swap-leave-to {
+  opacity: 0;
+  transform: translateX(-26px) scale(0.99);
 }
 
 /* ── Responsivo ───────────────────────────────────────────────── */

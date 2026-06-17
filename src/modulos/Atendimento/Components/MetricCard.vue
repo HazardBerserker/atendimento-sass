@@ -7,7 +7,7 @@
       <span v-if="badge" class="badge" :class="`badge-${badgeColor}`">{{ badge }}</span>
     </div>
 
-    <div class="card-value">{{ formattedValue }}</div>
+    <div class="card-value">{{ formattedDisplay }}</div>
     <div class="card-title">{{ title }}</div>
     <div v-if="subtitle" class="card-subtitle">{{ subtitle }}</div>
   </div>
@@ -27,17 +27,52 @@ export default {
     isCurrency: { type: Boolean, default: false },
     variant:    { type: String, default: 'default' }
   },
+  data() {
+    return { display: 0 }
+  },
   computed: {
     resolvedIconColor() {
       if (this.iconColor) return this.iconColor
-      return { highlight: '#C96B64', success: '#1A8C5C', warning: '#D97706',
-               danger: '#DC2626', info: '#2563EB', default: '#D68B36' }[this.variant] || '#D68B36'
+      return { highlight: '#C16C61', success: '#4F9D72', warning: '#C68A3E',
+               danger: '#C9594F', info: '#5B7FB5', default: '#C57F4B' }[this.variant] || '#C57F4B'
     },
-    formattedValue() {
+    numericValue() {
+      const n = Number(this.value)
+      return Number.isFinite(n) ? n : null
+    },
+    formattedDisplay() {
+      // Valores não numéricos (ex: percentuais formatados) passam direto
+      if (this.numericValue === null) return this.value
+      const v = this.display
       if (this.isCurrency) {
-        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(this.value)
+        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v)
       }
-      return this.value
+      return Number.isInteger(this.numericValue) ? Math.round(v) : v.toFixed(1)
+    }
+  },
+  watch: {
+    numericValue: {
+      immediate: true,
+      handler(novo, antigo) { this.animarValor(antigo || 0, novo) }
+    }
+  },
+  methods: {
+    animarValor(de, ate) {
+      if (ate === null) return
+      if (typeof window === 'undefined' || !window.requestAnimationFrame) {
+        this.display = ate
+        return
+      }
+      const inicio = performance.now()
+      const dur = 600
+      const passo = (agora) => {
+        const t = Math.min((agora - inicio) / dur, 1)
+        const eased = 1 - Math.pow(1 - t, 3)
+        this.display = de + (ate - de) * eased
+        if (t < 1) requestAnimationFrame(passo)
+        else this.display = ate
+      }
+      requestAnimationFrame(passo)
     }
   }
 }
@@ -45,27 +80,27 @@ export default {
 
 <style scoped>
 .metric-card {
-  background: #FFFFFF;
-  border-radius: 10px;
-  border: 1px solid #EFEFEF;
-  border-left: 3px solid #D68B36;
-  padding: 12px 14px 10px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  background: var(--c-surface);
+  border-radius: var(--r-md);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--c-primary);
+  padding: 13px 15px 11px;
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
   height: 100%;
 }
 
 .metric-card:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 /* Variant colors */
-.variant-highlight { border-left-color: #C96B64; background: #FFF9F8; }
-.variant-success   { border-left-color: #1A8C5C; background: #F6FCF9; }
-.variant-warning   { border-left-color: #D97706; background: #FFFEF5; }
-.variant-danger    { border-left-color: #DC2626; background: #FFF7F7; }
-.variant-info      { border-left-color: #2563EB; background: #F6F9FF; }
+.variant-highlight { border-left-color: var(--c-rose);    background: var(--c-rose-soft); }
+.variant-success   { border-left-color: var(--c-success); background: var(--c-success-soft); }
+.variant-warning   { border-left-color: var(--c-warning); background: var(--c-warning-soft); }
+.variant-danger    { border-left-color: var(--c-danger);  background: var(--c-danger-soft); }
+.variant-info      { border-left-color: var(--c-info);    background: var(--c-info-soft); }
 
 /* Top row: icon + badge */
 .card-top {
@@ -76,20 +111,20 @@ export default {
 }
 
 .icon-wrap {
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(214, 139, 54, 0.09);
+  background: var(--c-primary-soft);
 }
 
-.variant-highlight .icon-wrap { background: rgba(201,107,100,0.09); }
-.variant-success   .icon-wrap { background: rgba(26,140,92,0.09); }
-.variant-warning   .icon-wrap { background: rgba(217,119,6,0.09); }
-.variant-danger    .icon-wrap { background: rgba(220,38,38,0.09); }
-.variant-info      .icon-wrap { background: rgba(37,99,235,0.09); }
+.variant-highlight .icon-wrap { background: var(--c-rose-soft); }
+.variant-success   .icon-wrap { background: var(--c-success-soft); }
+.variant-warning   .icon-wrap { background: var(--c-warning-soft); }
+.variant-danger    .icon-wrap { background: var(--c-danger-soft); }
+.variant-info      .icon-wrap { background: var(--c-info-soft); }
 
 /* Badge */
 .badge {
@@ -100,16 +135,16 @@ export default {
   border-radius: 10px;
   letter-spacing: 0.2px;
 }
-.badge-success { background: rgba(26,140,92,0.1);  color: #1A8C5C; }
-.badge-error   { background: rgba(220,38,38,0.1);  color: #DC2626; }
-.badge-grey    { background: rgba(0,0,0,0.07);     color: #777; }
+.badge-success { background: var(--c-success-soft); color: var(--c-success); }
+.badge-error   { background: var(--c-danger-soft);  color: var(--c-danger); }
+.badge-grey    { background: var(--c-surface-hover); color: var(--c-text-soft); }
 
 /* Value */
 .card-value {
   font-family: 'Nunito', sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 800;
-  color: #1A1A1A;
+  color: var(--c-text);
   line-height: 1;
   margin-bottom: 3px;
   letter-spacing: -0.3px;
@@ -120,7 +155,7 @@ export default {
   font-family: 'Nunito', sans-serif;
   font-size: 0.65rem;
   font-weight: 700;
-  color: #888;
+  color: var(--c-text-soft);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -129,7 +164,7 @@ export default {
 .card-subtitle {
   font-family: 'Nunito', sans-serif;
   font-size: 0.65rem;
-  color: #BBB;
+  color: var(--c-text-faint);
   margin-top: 3px;
   line-height: 1.2;
 }

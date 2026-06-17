@@ -10,9 +10,7 @@
         >
           <div class="alert-content">
             <div class="alert-icon">
-              <v-icon :color="getIconColor(alert.type)" size="20">
-                {{ getIcon(alert.type) }}
-              </v-icon>
+              <v-icon :color="getIconColor(alert.type)" size="20">{{ getIcon(alert.type) }}</v-icon>
             </div>
             <div class="alert-message" v-html="alert.message"></div>
             <div class="alert-close">

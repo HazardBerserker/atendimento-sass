@@ -5,20 +5,23 @@
       @onLogout="logout"
     />
 
-    <v-main class="height-screen d-flex align-center justify-center">
-        <v-container class="main h-100" fluid style="min-height: 93vh; background: #F8F8F7">
+    <v-main class="height-screen">
+        <v-container class="main" fluid>
           <router-view v-slot="{ Component }">
-            <Transition name="fade" mode="out-in">
+            <Transition name="route" mode="out-in" appear>
               <component :is="Component" />
             </Transition>
           </router-view>
         </v-container>
     </v-main>
+
+    <AppBottomNav />
   </v-app>
 </template>
 
 <script>
 import AppBarHeader from '@/modulos/Layout/AppBarHeader.vue';
+import AppBottomNav from '@/modulos/Layout/AppBottomNav.vue';
 import { useAuthStore } from '@/modulos/Shared/Domain/Stores/auth'
 // import ApiService from '@/modulos/Shared/Domain/Services/ApiService';
 import { useAlertStore } from '@/modulos/Shared/Domain/Stores/alertStore';
@@ -27,6 +30,7 @@ import { useAlertStore } from '@/modulos/Shared/Domain/Stores/alertStore';
 export default {
   components: {
     AppBarHeader,
+    AppBottomNav,
   },
   async mounted() {
     // await this.buscaTelasVisiveis()
@@ -69,7 +73,16 @@ export default {
 
 <style>
 .main {
-  height: 93.25vh;
+  min-height: calc(100vh - 60px);
+  background: var(--c-bg);
+  padding: 0;
+}
+
+/* Em modo app (tablet/celular) o conteúdo ganha respiro para a barra inferior */
+@media (max-width: 1024px) {
+  .main {
+    padding-bottom: calc(92px + env(safe-area-inset-bottom));
+  }
 }
 
 .diagonal-app-bar::before {

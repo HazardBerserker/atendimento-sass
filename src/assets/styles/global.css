@@ -19,6 +19,93 @@
   font-style: normal;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Design tokens — paleta quente "estética/spa"
+   Tons creme e areia no lugar do branco puro para suavizar o
+   contraste e dar identidade. Inspirado em rosé / terracota.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  /* Fundos */
+  --c-bg:            #F4EEE6;  /* fundo geral — areia quente */
+  --c-bg-soft:       #EFE7DC;  /* fundo um pouco mais fechado */
+  --c-surface:       #FCF9F5;  /* superfície de cards — off-white quente */
+  --c-surface-2:     #F8F2EA;  /* superfície secundária */
+  --c-surface-hover: #F3EBE0;
+
+  /* Bordas */
+  --c-border:        #EBE2D5;
+  --c-border-soft:   #F0E9DE;
+  --c-border-strong: #DFD3C2;
+
+  /* Texto */
+  --c-text:          #3B342E;  /* carvão quente — não preto frio */
+  --c-text-soft:     #8C8175;
+  --c-text-faint:    #B3A899;
+
+  /* Marca — terracota / âmbar */
+  --c-primary:       #C57F4B;
+  --c-primary-dark:  #A9663A;
+  --c-primary-soft:  rgba(197, 127, 75, 0.10);
+  --c-primary-softer:rgba(197, 127, 75, 0.06);
+
+  /* Acento rosé */
+  --c-rose:          #C16C61;
+  --c-rose-soft:     #F6EAE7;
+  --c-rose-border:   #ECD3CD;
+
+  /* Status (versões dessaturadas, menos berrantes) */
+  --c-success:       #4F9D72;
+  --c-success-soft:  rgba(79, 157, 114, 0.10);
+  --c-warning:       #C68A3E;
+  --c-warning-soft:  rgba(198, 138, 62, 0.10);
+  --c-danger:        #C9594F;
+  --c-danger-soft:   rgba(201, 89, 79, 0.10);
+  --c-info:          #5B7FB5;
+  --c-info-soft:     rgba(91, 127, 181, 0.10);
+
+  /* Sombras suaves e quentes */
+  --shadow-xs: 0 1px 2px rgba(89, 66, 45, 0.05);
+  --shadow-sm: 0 1px 3px rgba(89, 66, 45, 0.06), 0 1px 2px rgba(89, 66, 45, 0.04);
+  --shadow-md: 0 4px 16px rgba(89, 66, 45, 0.08);
+  --shadow-lg: 0 12px 36px rgba(89, 66, 45, 0.12);
+
+  /* Raios */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+}
+
+/* Tema escuro — tons quentes profundos (mocha) */
+:root[data-theme="dark"] {
+  --c-bg:            #1E1A17;
+  --c-bg-soft:       #181410;
+  --c-surface:       #29231E;
+  --c-surface-2:     #322A23;
+  --c-surface-hover: #352D25;
+
+  --c-border:        #3A322A;
+  --c-border-soft:   #332B24;
+  --c-border-strong: #463C32;
+
+  --c-text:          #EFE7DC;
+  --c-text-soft:     #B0A595;
+  --c-text-faint:    #7E7263;
+
+  --c-primary:       #E0A165;
+  --c-primary-dark:  #C9854A;
+  --c-primary-soft:  rgba(224, 161, 101, 0.14);
+  --c-primary-softer:rgba(224, 161, 101, 0.08);
+
+  --c-rose:          #D58A7F;
+  --c-rose-soft:     rgba(213, 138, 127, 0.12);
+  --c-rose-border:   rgba(213, 138, 127, 0.25);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.5);
+}
+
 /* Reset básico */
 body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote {
   margin: 0;
@@ -31,16 +118,33 @@ html, body, #app {
   padding: 0;
 }
 
+/* Evita rolagem/desalinhamento horizontal (some no mobile ao abrir dialogs) */
+html, body, #app {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   font-family: 'Inter', sans-serif !important;
   line-height: 1.4;
-  background-color: #F8F8F7;
-  color: #333 !important;
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  /* Comportamento de aplicativo */
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Garantir que o v-main tenha cor de texto correta */
-.v-main {
-  color: #333 !important;
+/* Botões e elementos de UI não selecionáveis (cara de app nativo) */
+button, .v-btn, nav, .app-header { -webkit-user-select: none; user-select: none; }
+
+/* Conteúdo de texto continua selecionável */
+input, textarea, p, span, td, h1, h2, h3, h4 { -webkit-user-select: text; }
+
+/* Transição suave de tema */
+body {
+  transition: background-color 0.45s ease, color 0.45s ease;
 }
 
 /* Links */
@@ -55,44 +159,172 @@ img, video {
   display: block;
 }
 
-.v-app-bar-nav-icon {
-  color: white !important;
+/* ── Scrollbar quente e discreta ─────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-border-strong) transparent;
 }
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--c-border-strong);
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--c-text-faint); background-clip: content-box; }
 
-/* ── Vuetify overlay / button fixes ──────────────────────── */
-
-/* Prevent dark scrim behind menus */
+/* ── Ajustes do Vuetify (menus, listas, campos, scrim) ───── */
+/* Sem scrim escuro atrás de menus/dropdowns */
 .v-overlay__scrim {
   opacity: 0 !important;
   display: none !important;
 }
-
-/* Keep v-dialog scrim visible */
+/* Scrim visível só em dialogs — SEM backdrop-filter (evita o espelhamento) */
 .v-dialog + .v-overlay__scrim,
 .v-overlay--active.v-dialog .v-overlay__scrim {
   display: block !important;
-  opacity: 0.5 !important;
+  opacity: 1 !important;
+  background: rgba(40, 30, 20, 0.5) !important;
 }
-
-/* Remove the harsh dark hover overlay on buttons */
+/* Remove o overlay escuro agressivo nos botões */
 .v-btn .v-btn__overlay {
   background-color: currentColor !important;
 }
-
-/* Ensure Vuetify selects/menus use white background */
+/* Listas/menus/selects com a superfície quente do tema */
 .v-list {
-  background-color: #FFFFFF !important;
+  background-color: var(--c-surface) !important;
+  color: var(--c-text) !important;
 }
-
 .v-select__content .v-list {
-  background-color: #FFFFFF !important;
-  border-radius: 10px !important;
-  border: 1px solid #EFEFEF !important;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important;
+  background-color: var(--c-surface) !important;
+  border-radius: var(--r-md) !important;
+  border: 1px solid var(--c-border) !important;
+  box-shadow: var(--shadow-md) !important;
 }
-
-/* Vuetify field overlay — prevent it from darkening inputs */
+/* Evita o overlay escurecendo os inputs */
 .v-field__overlay {
   background-color: transparent !important;
   opacity: 0 !important;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Animações utilitárias reutilizáveis
+   ───────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* Entrada escalonada — aplique .anim-in e --i no inline style */
+.anim-in {
+  opacity: 0;
+  animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* Skeleton quente */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--c-surface-2) 0%,
+    var(--c-surface-hover) 50%,
+    var(--c-surface-2) 100%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: var(--r-sm);
+}
+
+/* Transição de rota (usada no App.vue / fade) */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* Transição de rota principal (entre telas do app) */
+.route-enter-active {
+  transition: opacity 0.32s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.route-leave-active {
+  transition: opacity 0.2s ease, transform 0.28s ease;
+}
+.route-enter-from {
+  opacity: 0;
+  transform: translateY(14px) scale(0.992);
+}
+.route-leave-to {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.996);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Controles de formulário próprios (.app-input)
+   ───────────────────────────────────────────────────────────── */
+.app-input {
+  width: 100%;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  color: var(--c-text);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.app-input::placeholder { color: var(--c-text-faint); }
+.app-input:focus {
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 3px var(--c-primary-softer);
+}
+.app-input:disabled { opacity: 0.55; cursor: not-allowed; }
+.app-input.has-error {
+  border-color: var(--c-danger);
+  box-shadow: 0 0 0 3px var(--c-danger-soft);
+}
+.app-input-error {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--c-danger);
+  margin-top: 4px;
+}
+/* ícones nativos de date/time herdam o tom do tema */
+:root[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator,
+:root[data-theme="dark"] input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+}
+
+/* Observação: as animações da interface são mantidas mesmo com
+   prefers-reduced-motion, pois fazem parte da experiência do app.
+   (Antes havia um override global que desligava tudo — removido.) */

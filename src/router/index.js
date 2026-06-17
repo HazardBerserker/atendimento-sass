@@ -17,11 +17,22 @@ const routes = [
     component: AuthLayout,
     // meta: { requiresAuth: true },
     meta: { requiresAuth: false },
+    redirect: '/atendimento',
     children: [
       {
         path: '/atendimento',
         name: 'atendimento',
         component: AtendimentoView,
+      },
+      {
+        path: '/clientes',
+        name: 'clientes',
+        component: () => import('@/modulos/Cliente/View/Root/ClientesView.vue'),
+      },
+      {
+        path: '/configuracoes',
+        name: 'configuracoes',
+        component: () => import('@/modulos/Configuracoes/View/Root/ConfiguracoesView.vue'),
       },
     ]
   },

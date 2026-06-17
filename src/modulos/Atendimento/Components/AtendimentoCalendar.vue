@@ -5,11 +5,11 @@
     <div class="cal-header">
       <div class="cal-nav">
         <button class="cal-nav-btn" @click="mesAnterior">
-          <v-icon size="18" color="#555">mdi-chevron-left</v-icon>
+          <v-icon size="18" color="var(--c-text-soft)">mdi-chevron-left</v-icon>
         </button>
         <span class="cal-month-label">{{ mesAnoAtual }}</span>
         <button class="cal-nav-btn" @click="proximoMes">
-          <v-icon size="18" color="#555">mdi-chevron-right</v-icon>
+          <v-icon size="18" color="var(--c-text-soft)">mdi-chevron-right</v-icon>
         </button>
       </div>
       <button class="cal-hoje-btn" @click="irParaHoje">Hoje</button>
@@ -77,7 +77,7 @@
             </div>
           </div>
           <button class="day-dialog-close" @click="dialogDia = false">
-            <v-icon size="16" color="#AAA">mdi-close</v-icon>
+            <v-icon size="16" color="var(--c-text-faint)">mdi-close</v-icon>
           </button>
         </div>
 
@@ -99,7 +99,7 @@
             </div>
           </div>
           <div v-else class="day-empty">
-            <v-icon size="28" color="#DDD">mdi-calendar-blank</v-icon>
+            <v-icon size="28" color="var(--c-border-strong)">mdi-calendar-blank</v-icon>
             <p>Nenhum atendimento</p>
           </div>
         </div>
@@ -240,9 +240,9 @@ export default {
 <style scoped>
 /* ── Wrapper ───────────────────────────────────────────── */
 .cal-wrap {
-  background: #FFFFFF;
+  background: var(--c-surface);
   border-radius: 14px;
-  border: 1px solid #EFEFEF;
+  border: 1px solid var(--c-border);
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   overflow: hidden;
   font-family: 'Nunito', sans-serif;
@@ -254,8 +254,8 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 14px 18px;
-  border-bottom: 1px solid #F5F5F5;
-  background: #FFFFFF;
+  border-bottom: 1px solid var(--c-surface-hover);
+  background: var(--c-surface);
 }
 
 .cal-nav {
@@ -278,14 +278,14 @@ export default {
 }
 
 .cal-nav-btn:hover {
-  background: #F5F5F5;
+  background: var(--c-surface-hover);
 }
 
 .cal-month-label {
   font-family: 'Playfair Display', serif;
   font-size: 1rem;
   font-weight: 600;
-  color: #1A1A1A;
+  color: var(--c-text);
   padding: 0 10px;
   min-width: 160px;
   text-align: center;
@@ -295,7 +295,7 @@ export default {
   font-family: 'Nunito', sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
-  color: #D68B36;
+  color: var(--c-primary);
   background: transparent;
   border: 1px solid #E8C07A;
   border-radius: 7px;
@@ -307,7 +307,7 @@ export default {
 
 .cal-hoje-btn:hover {
   background: rgba(214,139,54,0.07);
-  border-color: #D68B36;
+  border-color: var(--c-primary);
 }
 
 /* ── Grid ──────────────────────────────────────────────── */
@@ -319,14 +319,14 @@ export default {
 /* Weekday row */
 .cal-weekdays {
   padding: 0 6px;
-  background: #FAFAFA;
-  border-bottom: 1px solid #F0F0F0;
+  background: var(--c-surface-2);
+  border-bottom: 1px solid var(--c-border);
 }
 
 .cal-weekday {
   font-size: 0.62rem;
   font-weight: 700;
-  color: #C0C0C0;
+  color: var(--c-text-faint);
   text-align: center;
   padding: 7px 4px;
   text-transform: uppercase;
@@ -337,7 +337,7 @@ export default {
 .cal-days {
   padding: 6px;
   gap: 4px;
-  background: #FFFFFF;
+  background: var(--c-surface);
 }
 
 /* ── Individual day cell ───────────────────────────────── */
@@ -345,15 +345,15 @@ export default {
   min-height: 82px;
   padding: 5px 6px;
   border-radius: 8px;
-  background: #FFFFFF;
-  border: 1px solid #F0F0F0;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
   cursor: pointer;
   transition: border-color 0.1s ease, box-shadow 0.1s ease;
   overflow: hidden;
 }
 
 .cal-day:hover {
-  border-color: #E0E0E0;
+  border-color: var(--c-border-strong);
   box-shadow: 0 1px 4px rgba(0,0,0,0.07);
 }
 
@@ -367,7 +367,7 @@ export default {
 
 /* Weekend */
 .cal-day.is-weekend {
-  background: #FDFDFD;
+  background: var(--c-surface-2);
 }
 
 /* Holiday */
@@ -377,7 +377,7 @@ export default {
 
 /* Today */
 .cal-day.is-today {
-  border-color: #D68B36;
+  border-color: var(--c-primary);
   box-shadow: 0 0 0 1px rgba(214,139,54,0.15);
 }
 
@@ -392,7 +392,7 @@ export default {
 .day-num {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #444;
+  color: var(--c-text);
   line-height: 1;
   display: flex;
   align-items: center;
@@ -404,13 +404,13 @@ export default {
 }
 
 .is-today .day-num {
-  background: #D68B36;
+  background: var(--c-primary);
   color: #FFFFFF;
   font-weight: 700;
 }
 
 .is-other-month .day-num {
-  color: #CCC;
+  color: var(--c-text-faint);
 }
 
 .holiday-dot {
@@ -472,14 +472,14 @@ export default {
 .event-time {
   font-size: 0.6rem;
   font-weight: 700;
-  color: #666;
+  color: var(--c-text-soft);
   flex-shrink: 0;
 }
 
 .event-name {
   font-size: 0.62rem;
   font-weight: 600;
-  color: #333;
+  color: var(--c-text);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -488,14 +488,14 @@ export default {
 .events-more {
   font-size: 0.58rem;
   font-weight: 700;
-  color: #AAA;
+  color: var(--c-text-faint);
   text-align: center;
   padding: 1px 0;
 }
 
 /* ── Day detail dialog (native card) ──────────────────── */
 .day-dialog {
-  background: #FFFFFF;
+  background: var(--c-surface);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0,0,0,0.12);
@@ -507,14 +507,14 @@ export default {
   align-items: flex-start;
   justify-content: space-between;
   padding: 16px 18px 12px;
-  border-bottom: 1px solid #F5F5F5;
+  border-bottom: 1px solid var(--c-surface-hover);
 }
 
 .day-dialog-title {
   font-family: 'Playfair Display', serif;
   font-size: 1rem;
   font-weight: 600;
-  color: #1A1A1A;
+  color: var(--c-text);
 }
 
 .day-dialog-holiday {
@@ -530,7 +530,7 @@ export default {
 .day-dialog-close {
   width: 26px;
   height: 26px;
-  border: 1px solid #EFEFEF;
+  border: 1px solid var(--c-border);
   border-radius: 7px;
   background: transparent;
   cursor: pointer;
@@ -542,7 +542,7 @@ export default {
 }
 
 .day-dialog-close:hover {
-  background: #F5F5F5;
+  background: var(--c-surface-hover);
 }
 
 .day-dialog-body {
@@ -584,14 +584,14 @@ export default {
 .event-row-time {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #333;
+  color: var(--c-text);
   flex-shrink: 0;
 }
 
 .event-row-name {
   font-size: 0.82rem;
   font-weight: 500;
-  color: #555;
+  color: var(--c-text-soft);
 }
 
 .event-status-badge {
@@ -617,7 +617,7 @@ export default {
 
 .day-empty p {
   font-size: 0.82rem;
-  color: #CCC;
+  color: var(--c-text-faint);
   margin: 0;
 }
 
@@ -627,17 +627,17 @@ export default {
   justify-content: flex-end;
   gap: 8px;
   padding: 10px 18px;
-  border-top: 1px solid #F5F5F5;
-  background: #FAFAFA;
+  border-top: 1px solid var(--c-surface-hover);
+  background: var(--c-surface-2);
 }
 
 .day-dialog-cancel {
   font-family: 'Nunito', sans-serif;
   font-size: 0.78rem;
   font-weight: 600;
-  color: #999;
+  color: var(--c-text-soft);
   background: transparent;
-  border: 1px solid #E5E5E5;
+  border: 1px solid var(--c-border-strong);
   border-radius: 7px;
   padding: 6px 14px;
   cursor: pointer;
@@ -645,8 +645,8 @@ export default {
 }
 
 .day-dialog-cancel:hover {
-  background: #F5F5F5;
-  color: #666;
+  background: var(--c-surface-hover);
+  color: var(--c-text-soft);
 }
 
 .day-dialog-add {
@@ -654,7 +654,7 @@ export default {
   font-size: 0.78rem;
   font-weight: 700;
   color: #FFFFFF;
-  background: #D68B36;
+  background: var(--c-primary);
   border: none;
   border-radius: 7px;
   padding: 6px 14px;
@@ -667,6 +667,6 @@ export default {
 }
 
 .day-dialog-add:hover {
-  background: #C07A28;
+  background: var(--c-primary-dark);
 }
 </style>
